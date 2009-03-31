@@ -1,0 +1,8 @@
+#draggable {
+    width   : 150px;
+    height  : 150px;
+    padding : 0.5em;
+    margin: 0px;
+    background-color: #FFCCAA;
+    border: solid 2px #CCAA66;
+}
