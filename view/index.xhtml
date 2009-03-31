@@ -1,12 +1,14 @@
-<p>Hello there!</p>
-
 <div id="main">
-  <div id="draggable">
-    component_id: foo<br/>
-    Oh, I'm a draggable thang!
+  <div class="items">
+    <?r @items.each do |item| ?>
+      <span class="item draggable" id="item-#{item.id}">
+        <span class="name">#{h item.name}</span>
+        <span class="description">#{h item.description}</span>
+      </span>
+    <?r end ?>
   </div>
 
   <div id="droppable">
-  <p>Drop here</p>
+    <p>Drop here</p>
   </div>
 </div>

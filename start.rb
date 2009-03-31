@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'ramaze-innate'
+require 'ramaze'
 require 'json'
 
 # Add the directory this file resides in to the load path, so you can run the
@@ -10,4 +10,4 @@ $LOAD_PATH.unshift(__DIR__)
 require 'controller/init'
 require 'model/init'
 
-Ramaze.start(:adapter => :webrick, :port => 7000) if __FILE__ == $0
+Ramaze.start(:adapter => :thin, :port => 7000) if __FILE__ == $0

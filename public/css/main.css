@@ -1,18 +1,66 @@
-#draggable {
-    width   : 150px;
-    height  : 100px;
-    padding : 1em;
-    margin: 0px;
-    background-color: #FFCCAA;
-    border: solid 2px #CCAA66;
-    font-size: 14px;
+/*
+ * I found the DOM to be very confused about items in the cart, we cannot
+ * easily position them absolutely, float them, change their size, etc...
+ * without affecting the flow of the elements still outside the cart.
+ *
+ * I have to check out the examples where element alignment is handled by
+ * javascript as well, since CSS cannot change the parent of any element
+ *
+ * What seems to be the easiest hack is to set the display of an item in the
+ * cart to none, while cloning it item with the cart as parent and setting the
+ * display of the cloned item to run-in or something.
+ *
+ * Once the item is removed from the cart we reverse these things, the clone is
+ * deleted and the original item restored.
+ *
+ * Still that leaves the UI in a mess and will take a lot of time, so let's not
+ * go there.
+ */
+
+#main {
+  margin: auto;
+  width: 960px;
+}
+
+.draggable {
+  z-index: 10;
+}
+
+.items {
+  height: 400px;
+}
+
+.item {
+  text-align: center;
+  float: left;
+  width: 190px;
+  background: #fdb;
+  margin: 0.5em;
+  border: solid 2px #f90;
+}
+
+.item .name {
+  font-weight: bold;
+}
+
+.item .description {
+}
+
+.in-cart {
+  position: absolute;
+}
+
+.in-cart .description {
+  display: none;
 }
 
 #droppable {
-    width   : 350px;
-    height  : 200px;
-    padding : 2em;
-    margin: 0px;
-    background-color: #FFDDBB;
-    border: solid 2px #FF9900;
+  clear: both;
+  top: 1em;
+  right: 1em;
+  width: 960px;
+  padding: 2em;
+  z-index: 0;
+  background: #fdb;
+  border: solid 2px #f90;
 }

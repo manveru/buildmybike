@@ -1,32 +1,39 @@
 $( function() {
-    $("#draggable").draggable();
+  $(".draggable").draggable();
 
-    $("#droppable").droppable({
-        greedy: true,
-        drop: function(event, ui) {
-            var target = $(this);
-            target.addClass('ui-state-highlight');
+  $("#droppable").droppable({
+    greedy: true,
+    drop: function(event, ui) {
+      var target = $(this);
+      var item = ui.draggable[0];
 
-            $.post(
-                '/dropped_in.json',
-                { component_id: 'foo' },
-                function( json ) {
-                    target.find('p').html( 'Server says: ' + json['result']);
-                },
-                'json');
-        }
-    });
+      target.addClass('ui-state-highlight');
+      $(item).addClass('in-cart');
 
-    $("#main").droppable({
-        drop: function(event, ui) {
-            $('#droppable').removeClass('ui-state-highlight');
-            $.post(
-                '/dropped_out.json',
-                { component_id: 'foo' },
-                function( json ) {
-                    $('#droppable > p').html( 'Server says: ' + json['result']);
-                },
-                'json');
-        }
-    });
+      $.post(
+        '/dropped_in.json',
+        { item_id: item.id },
+        function( json ) {
+        target.find('p').html( 'Server says: ' + json['result']);
+      },
+      'json');
+    }
+  });
+
+  $("#main").droppable({
+    drop: function(event, ui) {
+      var item = ui.draggable[0];
+
+      $('#droppable').removeClass('ui-state-highlight');
+      $(item).removeClass('in-cart');
+
+      $.post(
+        '/dropped_out.json',
+        { item_id: item.id },
+        function( json ) {
+        $('#droppable > p').html( 'Server says: ' + json['result']);
+      },
+      'json');
+    }
+  });
 } );
