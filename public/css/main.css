@@ -1,8 +1,17 @@
 #draggable {
-    width   : 150px;
-    height  : 150px;
-    padding : 0.5em;
+    width   : 100px;
+    height  : 100px;
+    padding : 1em;
     margin: 0px;
     background-color: #FFCCAA;
     border: solid 2px #CCAA66;
+}
+
+#droppable {
+    width   : 350px;
+    height  : 200px;
+    padding : 2em;
+    margin: 0px;
+    background-color: #FFDDBB;
+    border: solid 2px #FF9900;
 }

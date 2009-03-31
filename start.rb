@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'ramaze'
+require 'ramaze-innate'
 
 # Add the directory this file resides in to the load path, so you can run the
 # app from any other working directory
