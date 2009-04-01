@@ -30,9 +30,9 @@ end
 
 mkdir_p 'vendor'
 
-install_git 'rack',   'rack/rack',      'ae3bd27580727453250feb29a722324e185b3dea'
+install_git 'rack',   'rack/rack',      '4cc1d6e773f64c20849b1d8088717a084b06830a'
 install_git 'ramaze', 'manveru/ramaze', '0395321e8f6938b394957e1f045b5189056ae860'
-install_git 'innate', 'manveru/innate', '0809fb114eda6b558bbca4e7c12713e40ab33ad9'
+install_git 'innate', 'manveru/innate', '8e93e8793978d0eabe3a8734455c6611e1ce17b2'
 
 Dir.chdir '../' do
   sh('tar -cvzf buildmybike.tar.gz buildmybike')
