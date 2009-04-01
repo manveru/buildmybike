@@ -1,14 +1,19 @@
-<div id="main">
-  <div class="items">
+<div class="shop ui-widget ui-helper-clearfix">
+  <ul id="items" class="items ui-helper-reset ui-helper-clearfix">
     <?r @items.each do |item| ?>
-      <span class="item draggable" id="item-#{item.id}">
+      <li id="item-#{item.id}" class="item ui-widget-content ui-corner-tr">
         <span class="name">#{h item.name}</span>
         <span class="description">#{h item.description}</span>
-      </span>
+        <a href="#" title="Add item" class="ui-icon ui-icon-cart">Add Item</a>
+      </li>
     <?r end ?>
-  </div>
+  </ul>
 
-  <div id="droppable">
-    <p>Drop here</p>
+  <div id="cart" class="cart ui-widget-content ui-state-default">
+    <h4 class="ui-widget-header">
+      <span class="ui-icon ui-icon-cart">Cart</span>
+      Cart
+    </h4>
+    <p>Simply drop items here.</p>
   </div>
 </div>

@@ -1,66 +1,15 @@
-/*
- * I found the DOM to be very confused about items in the cart, we cannot
- * easily position them absolutely, float them, change their size, etc...
- * without affecting the flow of the elements still outside the cart.
- *
- * I have to check out the examples where element alignment is handled by
- * javascript as well, since CSS cannot change the parent of any element
- *
- * What seems to be the easiest hack is to set the display of an item in the
- * cart to none, while cloning it item with the cart as parent and setting the
- * display of the cloned item to run-in or something.
- *
- * Once the item is removed from the cart we reverse these things, the clone is
- * deleted and the original item restored.
- *
- * Still that leaves the UI in a mess and will take a lot of time, so let's not
- * go there.
- */
+#shop { float: left; width: 65%; min-height: 12em; } 
+* html #shop { height: 12em; } /* IE6 */
 
-#main {
-  margin: auto;
-  width: 960px;
-}
+.items.custom-state-active { background: #eee; }
+.items li { float: left; width: 96px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; }
+.items li h5 { margin: 0 0 0.4em; cursor: move; }
+.items li a { float: right; }
+.items li a.ui-icon-zoomin { float: left; }
+.items li img { width: 100%; cursor: move; }
 
-.draggable {
-  z-index: 10;
-}
-
-.items {
-  height: 400px;
-}
-
-.item {
-  text-align: center;
-  float: left;
-  width: 190px;
-  background: #fdb;
-  margin: 0.5em;
-  border: solid 2px #f90;
-}
-
-.item .name {
-  font-weight: bold;
-}
-
-.item .description {
-}
-
-.in-cart {
-  position: absolute;
-}
-
-.in-cart .description {
-  display: none;
-}
-
-#droppable {
-  clear: both;
-  top: 1em;
-  right: 1em;
-  width: 960px;
-  padding: 2em;
-  z-index: 0;
-  background: #fdb;
-  border: solid 2px #f90;
-}
+#cart { float: right; width: 32%; min-height: 18em; padding: 1%;}
+* html #cart { height: 18em; } /* IE6 */
+#cart h4 { line-height: 16px; margin: 0 0 0.4em; }
+#cart h4 .ui-icon { float: left; }
+#cart .items h5 { display: none; }
