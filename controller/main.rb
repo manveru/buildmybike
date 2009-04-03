@@ -3,12 +3,10 @@ module Shop
     map '/'
 
     def index
-      @items = []
-      5.times do |n|
-        @items << Item.new("h#{n}1", 'Cool handle', 'Some cool quality handle')
-        @items << Item.new("h#{n}2", 'Medium handle', 'Some medium quality handle')
-        @items << Item.new("h#{n}3", 'Lame handle', 'Some lame quality handle')
-      end
+      @items = {
+        :handles => Array.new(5){|n| Item.new("h#{n}1", 'handle', 'cool handle', 'good quality') },
+        :lights => Array.new(5){|n| Item.new("h#{n}2", 'light', 'bright light', 'very good') }
+      }
     end
 
     def dropped_in

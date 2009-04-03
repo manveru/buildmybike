@@ -1,6 +1,6 @@
 $(function() {
   // there's the items and the cart
-  var $items = $('#items'), $cart = $('#cart');
+  var $items = $('.items'), $cart = $('#cart');
 
   // let the items items be draggable
   $('li',$items).draggable({
@@ -13,7 +13,7 @@ $(function() {
 
   // let the cart be droppable, accepting the items items
   $cart.droppable({
-    accept: '#items > li',
+    accept: '.items > li',
     activeClass: 'ui-state-highlight',
     drop: function(ev, ui) {
       deleteImage(ui.draggable);

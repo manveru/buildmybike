@@ -1,13 +1,16 @@
 <div class="shop ui-widget ui-helper-clearfix">
-  <ul id="items" class="items ui-helper-reset ui-helper-clearfix">
-    <?r @items.each do |item| ?>
-      <li id="item-#{item.id}" class="item ui-widget-content ui-corner-tr">
-        <span class="name">#{h item.name}</span>
-        <span class="description">#{h item.description}</span>
-        <a href="#" title="Add item" class="ui-icon ui-icon-cart">Add Item</a>
-      </li>
-    <?r end ?>
-  </ul>
+  <?r @items.each do |category, items| ?>
+    <h2>#{category}</h2>
+    <ul id="items" class="items ui-helper-reset ui-helper-clearfix">
+      <?r items.each do |item| ?>
+        <li id="item-#{item.id}" class="item ui-widget-content ui-corner-tr">
+          <span class="name">#{h item.name}</span>
+          <span class="description">#{h item.description}</span>
+          <a href="#" title="Add item" class="ui-icon ui-icon-cart">Add Item</a>
+        </li>
+      <?r end ?>
+    </ul>
+  <?r end ?>
 
   <div id="cart" class="cart ui-widget-content ui-state-default">
     <h4 class="ui-widget-header">
