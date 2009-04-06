@@ -1,16 +1,19 @@
+<div class="select-system-type">
+  <form method="post">
+    #{form_hidden :current_system_type, system_type}
+    #{form_select 'system type', :system_type, @system_types, :selected => system_type}
+    #{form_hidden :current_item_type, item_type}
+    #{form_select 'item type', :item_type, @item_types, :selected => item_type}
+    #{form_submit}
+  </form>
+</div>
+
 <div class="shop ui-widget ui-helper-clearfix">
-  <?r @items.each do |category, items| ?>
-    <h2>#{category}</h2>
-    <ul id="items" class="items ui-helper-reset ui-helper-clearfix">
-      <?r items.each do |item| ?>
-        <li id="item-#{item.id}" class="item ui-widget-content ui-corner-tr">
-          <span class="name">#{h item.name}</span>
-          <span class="description">#{h item.description}</span>
-          <a href="#" title="Add item" class="ui-icon ui-icon-cart">Add Item</a>
-        </li>
-      <?r end ?>
-    </ul>
-  <?r end ?>
+  <ul id="items" class="items ui-helper-reset ui-helper-clearfix">
+    <?r @items.each do |item| ?>
+      #{render_partial(:item, :item => item)}
+    <?r end ?>
+  </ul>
 
   <div id="cart" class="cart ui-widget-content ui-state-default">
     <h4 class="ui-widget-header">
@@ -18,5 +21,11 @@
       Cart
     </h4>
     <p>Simply drop items here.</p>
+
+    <ul class="items ui-helper-reset ui-helper-clearfix">
+      <?r items_in_cart.each do |item| ?>
+        #{render_partial(:item, :item => item, :in_cart => true)}
+      <?r end ?>
+    </ul>
   </div>
 </div>

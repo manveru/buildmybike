@@ -2,7 +2,7 @@
 * html #shop { height: 12em; } /* IE6 */
 
 .items.custom-state-active { background: #eee; }
-.items li { float: left; width: 96px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; }
+.items li { float: left; width: 130px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; }
 .items li h5 { margin: 0 0 0.4em; cursor: move; }
 .items li a { float: right; }
 .items li a.ui-icon-zoomin { float: left; }

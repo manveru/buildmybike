@@ -3,3 +3,4 @@ module Shop
 end
 
 require 'model/item'
+require 'model/system'

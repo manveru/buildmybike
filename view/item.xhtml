@@ -1,0 +1,10 @@
+<li class="item ui-widget-content ui-corner-tr">
+  <span class="item-id">#{@item.id}</span>
+  <span class="name">#{h @item.name}</span>
+  <span class="description">#{h @item.description}</span>
+  <?r if @in_cart ?>
+    <a href="#{r :remove_item, @item.id}" title="Remove item" class="ui-icon ui-icon-refresh">Remove Item</a>
+  <?r else ?>
+    <a href="#{r :add_item, @item.id}" title="Add item" class="ui-icon ui-icon-cart">Add Item</a>
+  <?r end ?>
+</li>
