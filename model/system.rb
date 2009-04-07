@@ -15,18 +15,20 @@ module Shop
 
     @@on_every_update = nil
 
-    attr_accessor :client_id, :name
+    attr_accessor :type, :client_id, :name
+    attr_reader :items
 
     def initialize(client_id, name)
       @client_id, @name = client_id, name
-      @categories_items = {}
+      @items = []
     end
 
     # keep only the latest item per category
     def add(item)
       return unless item.respond_to?(:category)
-      @categories_items[item.category] = item
-    ensure
+
+      @items << item
+
       updated
     end
     alias << add
@@ -35,18 +37,16 @@ module Shop
     # item per category
     def delete(item)
       return unless item.respond_to?(:category)
-      @categories_items.delete(item.category)
-    ensure
-      updated
+
+      if index = @items.index(item)
+        @items.delete_at(index)
+        updated
+      end
     end
 
     # yield every item in this system
     def each_item(&block)
-      @categories_items.values.each(&block)
-    end
-
-    def items
-      @categories_items.values
+      @items.each(&block)
     end
 
     def updated

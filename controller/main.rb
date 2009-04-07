@@ -56,9 +56,9 @@ module Shop
 
     def system_type
       if system_type = request[:system_type]
-        session[:system_type] = system_type
+        system.type = session[:system_type] = system_type
       else
-        session[:system_type] ||= @system_types.first
+        system.type = session[:system_type] ||= @system_types.first
       end
     end
 
