@@ -15,10 +15,10 @@ module Shop
 
     @@on_every_update = nil
 
-    attr_accessor :type, :client_id, :name
+    attr_accessor :type, :client_id, :name, :info
     attr_reader :items
 
-    def initialize(client_id, name)
+    def initialize(client_id, name = 'unnamed')
       @client_id, @name = client_id, name
       @items = []
     end
@@ -57,6 +57,27 @@ module Shop
       end
     end
 
+    # Just a placeholder, this is where the final report should be found.
+    def final_report
+      <<-LOREM.strip.gsub(/^(.*)$/, '<p>\1</p>')
+Dolor at nihil et labore et adipisci aut. Laboriosam maiores qui doloremque corrupti voluptatum ut asperiores possimus. Reiciendis dignissimos veniam repellendus.
+Ut cum sunt repudiandae libero quasi est eum optio. Quo eum soluta eaque voluptatibus aliquid similique nisi. Nemo itaque quibusdam neque accusantium facere commodi. Et sit a amet et aperiam ut expedita.
+Cumque molestias rerum fugiat pariatur facere repellat autem non. Omnis corrupti doloremque laboriosam fugiat tempore magni exercitationem sed. Sed accusamus nihil voluptas aspernatur cum praesentium aliquid. Ipsam alias voluptatem sint.
+Eveniet expedita voluptas pariatur quaerat. Aliquam voluptatum ut pariatur animi. In ut laudantium atque temporibus aut qui. Ut tempora vel ut sapiente facere corrupti ratione hic. Accusamus minus corrupti quia itaque ab nesciunt est.
+     LOREM
+    end
+
+    # This should generate some advice as fast as possible so the UI is smooth.
+    #
+    # For now we emulate some delay. This will generate advice for the system
+    # as it was 5 seconds ago.
+    def quick_report
+      message = "The system called %p is a %p with %d components"
+      info = message % [name, type, items.size]
+      sleep 5
+      info
+    end
+
     def self.on_every_update(&block)
       @@on_every_update = block
     end
@@ -66,8 +87,6 @@ module Shop
     end
 
     on_every_update do |system|
-      # show the system that has been updated
-      pp system
     end
   end
 end

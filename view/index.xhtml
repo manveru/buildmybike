@@ -1,19 +1,34 @@
 <div class="select-system-type">
   <form method="post">
-    #{form_hidden :current_system_type, system_type}
+    #{form_text 'system name', :system_name, system_name}
     #{form_select 'system type', :system_type, @system_types, :selected => system_type}
-    #{form_hidden :current_item_type, item_type}
     #{form_select 'item type', :item_type, @item_types, :selected => item_type}
     #{form_submit}
   </form>
 </div>
 
+#{a 'Done', r(:final_report)}
+#{a 'Clear', r(:clear_cart)}
+
 <div class="shop ui-widget ui-helper-clearfix">
-  <ul id="items" class="items ui-helper-reset ui-helper-clearfix">
+  <ul id="items" class="items ui-widget-content ui-helper-reset ui-helper-clearfix">
+    <h4 class="ui-widget-header">
+      <span class="ui-icon ui-icon-cart">Components</span>
+      Components
+    </h4>
     <?r @items.each do |item| ?>
       #{render_partial(:item, :item => item)}
     <?r end ?>
   </ul>
+
+  <div id="info" class="ui-widget-content ui-state-default">
+    <h4 class="ui-widget-header">
+      <span class="ui-icon ui-icon-cart">Agent info</span>
+      Agent info
+    </h4>
+    <div class="infos"></div>
+    <p>Our agents will evaluate state of your system and advice you.</p>
+  </div>
 
   <div id="cart" class="cart ui-widget-content ui-state-default">
     <h4 class="ui-widget-header">
@@ -27,5 +42,13 @@
         #{render_partial(:item, :item => item, :in_cart => true)}
       <?r end ?>
     </ul>
+  </div>
+
+  <div id="trash" class="trash ui-widget-content ui-state-default">
+    <h4 class="ui-widget-header">
+      <span class="ui-icon ui-icon-trash">Trash</span>
+      Trash
+    </h4>
+    <p>To remove a component from your system drop it here.</p>
   </div>
 </div>

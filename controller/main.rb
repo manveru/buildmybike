@@ -15,9 +15,8 @@ module Shop
       item = Item[request[:item_id]]
       system.add(item)
 
-      result = "Accepted item: %p." % h(item.inspect)
-      Ramaze::Log.info result
-      { 'result' => result }
+      Ramaze::Log.info("Accepted item: %p." % h(item.inspect))
+      { 'result' => system.quick_report }
     end
 
     def dropped_out
@@ -26,9 +25,8 @@ module Shop
       item = Item[request[:item_id]]
       system.delete(item)
 
-      result = "Extracted item: %p." % h(item.inspect)
-      Ramaze::Log.debug result
-      { 'result' => result }
+      Ramaze::Log.debug("Extracted item: %p." % h(item.inspect))
+      { 'result' => system.quick_report }
     end
 
     def add_item(id)
@@ -48,17 +46,30 @@ module Shop
       system.items
     end
 
+    def clear_cart
+      system.items.clear
+      redirect_referrer
+    end
+
     private
 
     def system
       session[:system]
     end
 
+    def system_name
+      if system_name = request[:system_name]
+        system.name = system_name
+      else
+        system.name
+      end
+    end
+
     def system_type
       if system_type = request[:system_type]
-        system.type = session[:system_type] = system_type
+        system.type = system_type
       else
-        system.type = session[:system_type] ||= @system_types.first
+        system.type ||= @system_types.first
       end
     end
 
@@ -71,7 +82,7 @@ module Shop
     end
 
     before_all do
-      session[:system] ||= System.new(session.sid, 'unnamed')
+      session[:system] ||= System.new(session.sid)
     end
   end
 end

@@ -1,0 +1,14 @@
+<h2>Final report</h2>
+<div class="system">
+  <h3>System:</h3>
+  #{h system.inspect }
+</div>
+<div class="components">
+  <h3>Components:</h3>
+  <?r system.items.each do |item| ?>
+    #{h item.inspect }
+  <?r end ?>
+</div>
+<div class="report">
+  #{system.final_report }
+</div>

@@ -5,6 +5,17 @@ function cl(arg) {
 $(function() {
   // there's the items and the cart
   var $items = $('.items'), $cart = $('#cart');
+  var $info = $('#info .infos');
+  var $trash = $('#trash');
+
+  function execute_drop(url, payload){
+    $.post(url, payload, function(json){
+      var p = $('<p>' + json['result'] + '</p>');
+      $info.prepend(p)
+      p.hide();
+      p.fadeIn(1000, function(){  });
+    }, 'json');
+  }
 
   // let the items be draggable
   function drag_able(obj){
@@ -20,41 +31,33 @@ $(function() {
   // let the cart be droppable, accepting the items
   function drop_in_able(obj){
     obj.droppable({
-      accept: '#items > li',
+      accept: '#items > li.item',
       activeClass: 'ui-state-highlight',
       drop: function(ev, ui) { drop_in($(ui.draggable[0])); }
     });
   }
 
   function drop_in(item){
-    cl({drop_in: item});
-
     add_to_cart(item);
     var payload = payload_for(item);
 
-    $.post('/dropped_in.json', payload, function(json){
-      $('#cart > p').html('Server says: ' + json['result']);
-    }, 'json');
+    execute_drop('/dropped_in.json', payload);
   }
 
   // let the items be droppable as well, accepting items from the cart
   function drop_out_able(obj){
     obj.droppable({
-      accept: '#cart li',
+      accept: '#cart li.item',
       activeClass: 'custom-state-active',
       drop: function(ev, ui){ drop_out($(ui.draggable[0])) }
     });
   }
 
   function drop_out(item){
-    cl({drop_out: item});
-
     remove_from_cart(item);
     var payload = payload_for(item);
 
-    $.post('/dropped_out.json', payload, function(json){
-      $('#cart > p').html('Server says: ' + json['result']);
-    }, 'json');
+    execute_drop('/dropped_out.json', payload);
   }
 
   function payload_for(item){
@@ -64,14 +67,12 @@ $(function() {
 
   // clone the item and add the clone to the cart
   // then change the icon
-  var remove_icon = '<a href="remove" title="Remove from cart" class="ui-icon ui-icon-refresh">Remove from cart</a>';
+  var remove_icon = '<a href="remove" title="Remove from cart" class="ui-icon ui-icon-trash">Remove from cart</a>';
   function add_to_cart(item){
-    cl({add_to_cart: item});
-
     var clone = item.clone();
     drag_able(clone);
 
-    clone.appendTo($('ul', $cart)).fadeIn(function(){
+    clone.appendTo($('ul', $cart)).hide().fadeIn(500, function(){
       clone.find('a.ui-icon-cart').remove();
       clone.append(remove_icon);
       add_click_events(clone);
@@ -81,10 +82,9 @@ $(function() {
   // remove the item from the cart totally.
   var cart_icon = '<a href="add" title="Add to cart" class="ui-icon ui-icon-cart">Add to cart</a>';
   function remove_from_cart(item){
-    cl({remove_from_cart: item});
-    item.fadeOut(function(){
+    item.fadeOut(500, function(){
       item.remove();
-      // $item.find('a.ui-icon-refresh').remove();
+      // $item.find('a.ui-icon-trash').remove();
       // $item.append(cart_icon);
     });
   }
@@ -96,9 +96,9 @@ $(function() {
       var $target = $(ev.target);
 
       if ($target.is('a.ui-icon-cart')) {
-        add_to_cart($item);
-      } else if ($target.is('a.ui-icon-refresh')) {
-        remove_from_cart($item);
+        drop_in($item);
+      } else if ($target.is('a.ui-icon-trash')) {
+        drop_out($item);
       }
 
       return false;
@@ -107,6 +107,7 @@ $(function() {
 
   drag_able($('li', $items));
   drop_in_able($cart);
-  drop_out_able($items);
+  drop_out_able($('#items'));
+  drop_out_able($trash);
   add_click_events($('ul.items > li'));
 });
