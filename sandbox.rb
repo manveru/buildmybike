@@ -34,11 +34,37 @@
 require 'fileutils'
 require 'optparse'
 require 'tmpdir'
+require 'open-uri'
 include FileUtils
 
 def sh(*cmd)
   puts cmd.join(' ')
   warn("Bad exit-status") unless system(*cmd)
+end
+
+def vendor_github(name_project_branch, target)
+  name, project, branch = name_project_branch.split('/')
+  branch ||= 'master'
+  uri = "http://github.com/#{name}/#{project}/tarball/#{branch}"
+  tar_name = [name, project, branch].join('-') + '.tar'
+
+  Dir.chdir(target) do
+    dirs_before = Dir['*']
+
+    puts "Downloading #{uri} ..."
+    File.open(tar_name, 'w+'){|tar| tar.write(open(uri).read) }
+    puts "done."
+
+    sh('tar', 'xf', tar_name)
+    rm_f(tar_name)
+
+    unpacked_tar_dir = (Dir['*'] - dirs_before).first
+    mv(unpacked_tar_dir, project)
+
+    Dir.glob(File.join(project, '*')) do |path|
+      rm_r(path) unless File.basename(path) == 'lib'
+    end
+  end
 end
 
 def vendor_remote(repo, target)
@@ -73,18 +99,22 @@ def sandbox(source, name, dependencies = {})
     sh("git archive --format=tar HEAD | (cd '#{target_dir}' && tar xf -)")
 
     dependencies.each do |type, repos|
+      repos.uniq!
+
       case type
       when :local
         repos.each{|repo| vendor_local(repo, target_vendor) }
       when :remote
         repos.each{|repo| vendor_remote(repo, target_vendor) }
+      when :github
+        repos.each{|repo| vendor_github(repo, target_vendor) }
       else
-        raise(ArgumentError, "Invalid dependency type: %p", type)
+        raise(ArgumentError, "Invalid dependency type: %p" % type)
       end
     end
 
     Dir.chdir(target) do |now|
-      sh('tar', '--checkpoint-action', 'dot', '-cjf', target_tar, name)
+      sh('tar', '-cjf', target_tar, name)
     end
 
     puts '', "All done, have fun playing, sandbox is waiting at #{target_tar}"
@@ -95,6 +125,7 @@ source = Dir.pwd
 name = File.basename(source)
 locals = []
 remotes = []
+githubs = []
 
 op = OptionParser.new{|o|
   o.on('-s', '--source DIR',
@@ -105,6 +136,8 @@ op = OptionParser.new{|o|
        'Put archives of these git repos into target/vendor'){|d| locals += d }
   o.on('-r', '--remote uri1,uri2,uri3', Array,
        'Put archives of these remote git repos into target/vendor'){|r| remotes += r }
+  o.on('-g', '--github name/proj,name/proj/branch', Array,
+       'Retrieve tarballs from github for given projects, branch defaults to master'){|g| githubs += g }
   o.on('-h', '--help'){ puts o; exit }
 }
 
@@ -115,4 +148,4 @@ end
 
 op.parse!(ARGV)
 
-sandbox(source, name, :local => locals.uniq, :remote => remotes.uniq)
+sandbox(source, name, :local => locals, :remote => remotes, :github => githubs)
